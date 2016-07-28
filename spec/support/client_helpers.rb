@@ -3,9 +3,11 @@ require 'uber'
 module ClientHelpers
   def setup_client(opts = {})
     Uber::Client.new do |c|
-      c.client_id    = 'UBER_CLIENT_ID'
-      c.bearer_token = 'UBER_BEARER_TOKEN'
-      c.sandbox = opts[:sandbox]
+      c.client_id     = 'UBER_CLIENT_ID'
+      c.client_secret = 'UBER_CLIENT_SECRET'
+      c.bearer_token  = 'UBER_BEARER_TOKEN'
+      c.redirect_uri  = 'UBER_REDIRECT_URI'
+      c.sandbox       = opts[:sandbox]
     end
   end
 
@@ -18,7 +20,13 @@ module ClientHelpers
 
     response = response_hash.nil? ? "" : response_hash.to_json
 
-    stub_request(method, "#{host}/#{api_endpoint}").
+    if api_endpoint.start_with?("http")
+      url = api_endpoint
+    else
+      url = "#{host}/#{api_endpoint}"
+    end
+
+    stub_request(method, url).
       with(with_opts).
       to_return(status: status_code, body: response)
   end

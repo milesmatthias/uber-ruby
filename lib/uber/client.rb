@@ -9,7 +9,7 @@ module Uber
   class Client
     include Uber::API
 
-    attr_accessor :server_token, :client_id, :client_secret
+    attr_accessor :server_token, :client_id, :client_secret, :redirect_uri
     attr_accessor :bearer_token
     attr_accessor :sandbox
 
@@ -131,7 +131,13 @@ module Uber
     end
 
     def request(method, path, params = {}, headers = {})
-      connection.send(method.to_sym, path, params) { |request| request.headers.update(headers) }.env
+      if path.start_with?("http")
+        other_con = Faraday.new(path, connection_options)
+        other_con.send(method.to_sym, "", params) { |request| request.headers.update(headers)}.env
+      else
+        connection.send(method.to_sym, path, params) { |request| request.headers.update(headers) }.env
+      end
+
     rescue Faraday::Error::TimeoutError, Timeout::Error => error
       raise(Uber::Error::RequestTimeout.new(error))
     rescue Faraday::Error::ClientError, JSON::ParserError => error

@@ -166,6 +166,65 @@ end
 client.trip_cancel 'request_id'
 ```
 
+## [OAauth](https://developer.uber.com/docs/rides/authentication#oauth-20)
+
+### Generate authorization URL
+
+```
+client = Uber::Client.new do |config|
+  config.client_id     = "YOUR_CLIENT_ID"
+  config.client_secret = "YOUR_CLIENT_SECRET"
+  config.redirect_uri  = "YOUR_REDIRECT_URI"
+end
+
+client.oauth_url({
+  :scope => "read",
+  :state => "foobar"
+})
+```
+
+### Get access token (handle redirect)
+
+```
+client = Uber::Client.new do |config|
+  config.client_id     = "YOUR_CLIENT_ID"
+  config.client_secret = "YOUR_CLIENT_SECRET"
+  config.redirect_uri  = "YOUR_REDIRECT_URI"
+end
+
+client.oauth_access_token({
+  :code => "UBER_AUTH_CODE"
+})
+```
+
+### Refresh access token
+
+```
+client = Uber::Client.new do |config|
+  config.client_id     = "YOUR_CLIENT_ID"
+  config.client_secret = "YOUR_CLIENT_SECRET"
+  config.redirect_uri  = "YOUR_REDIRECT_URI"
+end
+
+client.refresh_oauth_token({
+  :code => "UBER_AUTH_CODE"
+})
+```
+
+### Revoke access token
+
+```
+client = Uber::Client.new do |config|
+  config.client_id     = "YOUR_CLIENT_ID"
+  config.client_secret = "YOUR_CLIENT_SECRET"
+  config.redirect_uri  = "YOUR_REDIRECT_URI"
+end
+
+client.revoke_oauth_token({
+  :code => "UBER_AUTH_CODE"
+})
+```
+
 ## Contributors
 
 * [Arun Thampi](https://github.com/arunthampi)
