@@ -3,6 +3,7 @@ require 'uber'
 module ClientHelpers
   def setup_client(opts = {})
     Uber::Client.new do |c|
+      c.client_id    = 'UBER_CLIENT_ID'
       c.bearer_token = 'UBER_BEARER_TOKEN'
       c.sandbox = opts[:sandbox]
     end
