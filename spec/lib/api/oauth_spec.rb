@@ -37,7 +37,7 @@ describe Uber::API::OAuth do
       :scope         => "profile history"
     }
 
-    response = stub_uber_request(:get, Uber::API::OAuth::BASE_TOKEN_URL, expected_response, {
+    response = stub_uber_request(:get, Uber::API::OAuth::TOKEN_URL, expected_response, {
       :code       => 'AUTHORIZATION_CODE_FROM_STEP_2',
       :grant_type => 'authorization_code',
       :client_id  => 'UBER_CLIENT_ID'
@@ -60,7 +60,7 @@ describe Uber::API::OAuth do
       :scope         => "profile history"
     }
 
-    response = stub_uber_request(:get, Uber::API::OAuth::BASE_TOKEN_URL, expected_response, {
+    response = stub_uber_request(:get, Uber::API::OAuth::TOKEN_URL, expected_response, {
       :code          => 'AUTHORIZATION_CODE_FROM_STEP_2',
       :grant_type    => 'refresh_token',
       :client_id     => 'UBER_CLIENT_ID',
@@ -76,7 +76,7 @@ describe Uber::API::OAuth do
   end
 
   it "should be able to revoke tokens" do
-    response = stub_uber_request(:get, Uber::API::OAuth::BASE_REVOKE_URL, {}, {
+    response = stub_uber_request(:get, Uber::API::OAuth::REVOKE_URL, {}, {
       :token => 'UBER_OAUTH_TOKEN'
     }).response
 
