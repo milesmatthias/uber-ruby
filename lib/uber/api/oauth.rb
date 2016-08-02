@@ -16,9 +16,13 @@ module Uber
         :token_url => "/oauth/v2/token"
       }
 
-      def oauth_url
+      def oauth_url(opts={})
+        opts[:redirect_uri]  ||= redirect_uri
+        opts[:response_type] ||= "code"
+        opts[:client_id]     ||= client_id
+
         oauth_client = OAuth2::Client.new(client_id, client_secret, OAUTH_URLS)
-        oauth_client.authorize_url(redirect_uri: redirect_uri)
+        oauth_client.authorize_url(opts)
       end
 
       def oauth_access_token(code)
