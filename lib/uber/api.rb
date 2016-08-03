@@ -5,6 +5,7 @@ require 'uber/api/activities'
 require 'uber/api/me'
 require 'uber/api/promotions'
 require 'uber/api/requests'
+require 'uber/api/oauth'
 
 module Uber
   module API
@@ -16,5 +17,6 @@ module Uber
     include Uber::API::Me
     include Uber::API::Promotions
     include Uber::API::Requests
+    include Uber::API::OAuth
   end
 end

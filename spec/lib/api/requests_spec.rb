@@ -230,6 +230,59 @@ describe Uber::API::Requests do
     end
   end
 
+  describe '#current_trip' do
+    before do
+      stub_uber_request(:get, "v1/requests/current",
+                        # From: https://developer.uber.com/v1/endpoints/#request-details
+                        {
+                          "status" => "accepted",
+                          "driver" => {
+                            "phone_number" => "(555)555-5555",
+                            "rating" => 5,
+                            "picture_url" => "https://d1w2poirtb3as9.cloudfront.net/img.jpeg",
+                            "name" => "Bob"
+                          },
+                          "eta" => 4,
+                          "location" => {
+                            "latitude" => 37.776033,
+                            "longitude" => -122.418143,
+                            "bearing" => 33
+                          },
+                          "vehicle" => {
+                            "make" => "Bugatti",
+                            "model" => "Veyron",
+                            "license_plate" => "I<3Uber",
+                            "picture_url" => "https://d1w2poirtb3as9.cloudfront.net/car.jpeg",
+                          },
+                          "surge_multiplier" =>  1.0,
+                          "request_id" => "b2205127-a334-4df4-b1ba-fc9f28f56c96"
+                        },
+                        status_code: 200)
+    end
+
+    it 'should show the request for a ride' do
+      request = client.current_trip
+      expect(request.status).to eql 'accepted'
+      expect(request.surge_multiplier).to eql 1.0
+      expect(request.eta).to eql 4
+      expect(request.request_id).to eql 'b2205127-a334-4df4-b1ba-fc9f28f56c96'
+
+      expect(request.driver.phone_number).to eql '(555)555-5555'
+      expect(request.driver.rating).to eql 5
+      expect(request.driver.picture_url).to eql  'https://d1w2poirtb3as9.cloudfront.net/img.jpeg'
+      expect(request.driver.name).to eql 'Bob'
+
+      expect(request.location.latitude).to eql 37.776033
+      expect(request.location.longitude).to eql -122.418143
+      expect(request.location.bearing).to eql 33
+
+      expect(request.vehicle.make).to eql 'Bugatti'
+      expect(request.vehicle.model).to eql 'Veyron'
+      expect(request.vehicle.license_plate).to eql 'I<3Uber'
+      expect(request.vehicle.picture_url).to eql 'https://d1w2poirtb3as9.cloudfront.net/car.jpeg'
+    end
+  end
+
   describe '#trip_details' do
     before do
       stub_uber_request(:get, "v1/requests/deadbeef",
