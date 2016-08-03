@@ -7,6 +7,10 @@ require 'uber/models/map'
 module Uber
   module API
     module Requests
+      def current_trip
+        perform_with_object(:get, "v1/requests/current", {}, Request)
+      end
+
       def trip_estimate(*args)
         arguments = Uber::Arguments.new(args)
         perform_with_object(:post, "v1/requests/estimate", arguments.options, Estimate)
