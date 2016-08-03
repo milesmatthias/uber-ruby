@@ -1,6 +1,6 @@
 module Uber
   class Request < Base
-    attr_accessor :request_id, :status, :vehicle, :driver, :location, :eta, :surge_multiplier, :meta, :errors
+    attr_accessor :request_id, :status, :vehicle, :driver, :location, :destination, :eta, :surge_multiplier, :meta, :errors
 
     def driver=(value)
       @driver = value.nil? ? nil : Driver.new(value)
@@ -12,6 +12,10 @@ module Uber
 
     def location=(value)
       @location = value.nil? ? nil : Location.new(value)
+    end
+
+    def destination=(value)
+      @destination = value.nil? ? nil : Destination.new(value)
     end
 
     def errors=(values)
@@ -51,5 +55,9 @@ module Uber
 
   class Location < Base
     attr_accessor :latitude, :longitude, :bearing
+  end
+
+  class Destination < Base
+    attr_accessor :latitude, :longitude, :eta
   end
 end
